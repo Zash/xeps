@@ -6,7 +6,8 @@
 <?xml-stylesheet type='text/xsl' href='xep.xsl'?>
 <xep><header>
 <title>Simple Buttons</title>
-<abstract>This specification provides a way to send simple buttons.</abstract>
+<abstract>This specification provides a way to offer simple actions that trigger
+some response.</abstract>
 &LEGALNOTICE;
 <number>xxxx</number>
 <status>ProtoXEP</status>
@@ -25,16 +26,28 @@
 <jid>zash@zash.se</jid>
 </author>
 <revision>
+<version>0.0.3</version>
+<date>2019-04-00</date>
+<initials>ka</initials>
+<remark>
+<p>Add the onclick container</p>
+</remark>
+</revision>
+<revision>
 <version>0.0.2</version>
 <date>2018-09-30</date>
 <initials>ka</initials>
-<remark>Polishing preparing for submission</remark>
+<remark>
+<p>Polishing preparing for submission</p>
+</remark>
 </revision>
 <revision>
 <version>0.0.1</version>
 <date>2018-09-02</date>
 <initials>ka</initials>
-<remark>Initial version</remark>
+<remark>
+<p>Initial version</p>
+</remark>
 </revision>
 </header>
 <section1 anchor="intro" topic="Introduction">
@@ -43,32 +56,32 @@
 now. This specification defines a simple protocol for buttons and
 responses.</p>
 
+</section1><section1 anchor="open-issues" topic="Open issues">
+
+<ul>
+<li>Should it be called button?
+
+<ul>
+<li>Buttons are UI elements, not protocol.</li>
+<li>"Command" might cause confusion with Ad-hoc commands.</li>
+<li>"Actions"?</li>
+</ul></li>
+<li><tt>@value</tt> needed or replaced by <tt>&lt;onclick&gt;</tt>?</li>
+</ul>
+
 </section1><section1 anchor="reqs" topic="Requirements">
 
 <ul>
 <li>To provide a representation of a simple button or two in a chat.</li>
 </ul>
 
-<section2 anchor="todo" topic="TODO">
-
-<ul>
-<li>Is "button" too UI-centric?
-
-<ul>
-<li>Could base it on the <tt>&lt;action&gt;</tt> element from ad-hoc?</li>
-</ul></li>
-<li>Styling? Maybe a few fixed styles like normal, warning, danger?</li>
-</ul>
-
-</section2></section1><section1 anchor="glossary" topic="Glossary">
-
-<p>OPTIONAL.</p>
+</section1><section1 anchor="glossary" topic="Glossary">
 
 <dl>
 <di><dt>Button</dt>
-<dd>An actionable object that can be invoked.</dd></di>
+<dd>An available action that can be invoked.</dd></di>
 <di><dt>Click</dt>
-<dd>The act of invoking the actionable object.</dd></di>
+<dd>The act of invoking the action.</dd></di>
 </dl>
 
 </section1><section1 anchor="usecases" topic="Use Cases">
@@ -83,6 +96,9 @@ responses.</p>
 <tt>urn:xmpp:tmp:buttons</tt>.</p>
 
 <example><![CDATA[<button xmlns="urn:xmpp:tmp:buttons" value="button-clicked">
+  <onclick>
+    <clicked xmlns="urn:example:clicky-buttons"/>
+  </onclick>
   <label xml:lang="en">Click me</label>
 </button>]]></example>
 
@@ -90,9 +106,19 @@ responses.</p>
 <di><dt>value</dt>
 <dd>Textual payload to be sent in a message <tt>&lt;body&gt;</tt> when the button is
 clicked.</dd></di>
+<di><dt>&lt;onclick&gt;</dt>
+<dd>Container with a payload reflected back when button is clicked.</dd></di>
 <di><dt>&lt;label&gt;</dt>
 <dd>Text label for the button. Can be repeated per language.</dd></di>
 </dl>
+
+</section2><section2 anchor="response-element" topic="Response element">
+
+<example><![CDATA[<click xmlns="urn:xmpp:tmp:buttons"/>]]></example>
+
+<p>The payload contained in the <tt>&lt;onclick&gt;</tt> child of the button that was
+clicked is embedded in a <tt>&lt;click&gt;</tt> element in a response. For nice
+carbons and i18n the label can be used as body.</p>
 
 </section2></section1><section1 anchor="protocol" topic="Protocol">
 
@@ -102,27 +128,35 @@ clicked.</dd></di>
 elements with distinct value attributes. At least one &lt;label&gt; element
 MUST be included containing a textual description for the button.</p>
 
-<example><![CDATA[<message from="memberbot@example.com">
-  <body xml:lang="en">Approve? (yes/no)</body>
-  <button xmlns="urn:xmpp:tmp:buttons" value="yes">
-    <label xml:lang="en">Yes</label>
-    <label xml:lang="sv">Ja</label>
-  </button>
-  <button xmlns="urn:xmpp:tmp:buttons" value="no">
-    <label xml:lang="en">No</label>
-    <label xml:lang="sv">Nej</label>
+<example><![CDATA[<message from="orbital-defence-platform.example">
+  <body xml:lang="en">Danger: Do Not Push</body>
+  <button xmlns="urn:xmpp:tmp:buttons">
+    <onclick>
+      <x xmlns="jabber:x:data">
+        <field var="payload">
+          <value>1</value>
+        </field>
+      </x>
+    </onclick>
+    <label xml:lang="en">Big Red Button</label>
+    <label xml:lang="sv">Stor Röd Knapp</label>
   </button>
 </message>]]></example>
 
-<p>A single message MUST NOT have multiple buttons with the same <tt>@value</tt>.</p>
-
 </section2><section2 anchor="clicking-a-button" topic="Clicking a button">
 
-<p>When the user clicks a button, their client sends a plain text message
-body containing the <tt>@value</tt> as &lt;body&gt; text.</p>
+<p>When the user clicks a button, their client sends a message with a
+<tt>&lt;click&gt;</tt> element containing the payload from the <tt>&lt;onclick&gt;</tt> child of
+the clicked button.</p>
 
-<example><![CDATA[<message to="memberbot@example.com">
-  <body>yes</body>
+<example><![CDATA[<message to="orbital-defence-platform@example.mil">
+  <click xmlns="urn:xmpp:tmp:buttons">
+    <x xmlns="jabber:x:data">
+      <field var="payload">
+        <value>1</value>
+      </field>
+    </x>
+  </click>
 </message>]]></example>
 
 </section2></section1><section1 anchor="rules" topic="Business Rules">
@@ -135,13 +169,17 @@ body containing the <tt>@value</tt> as &lt;body&gt; text.</p>
 
 </section1><section1 anchor="access" topic="Accessibility Considerations">
 
-<p>Accessibility for whom?</p>
+<p>TODO. What should be written here?</p>
 
 </section1><section1 anchor="i18n" topic="Internationalization Considerations">
 
 <p>Multiple instances of the <tt>&lt;label/&gt;</tt> element MAY be included for the
 purpose of providing alternate versions of the same text in different
 languages, i.e. with distinct <tt>xml:lang</tt> attributes.</p>
+
+<p>If the language of the receiver is known then including other labels
+would be redundant, but this might not always be the case, e.g. in group
+chats.</p>
 
 </section1><section1 anchor="security" topic="Security Considerations">
 
@@ -160,8 +198,9 @@ languages, i.e. with distinct <tt>xml:lang</tt> attributes.</p>
 <p>REQUIRED for protocol specifications.</p>
 
 <code><![CDATA[button
-    @value : string
-    label+ : string]]></code>
+    onclick : any
+    label+ : string
+click : any]]></code>
 </section1>
 </xep>
 
