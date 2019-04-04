@@ -1,0 +1,111 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<!DOCTYPE xep SYSTEM 'xep.dtd' [
+  <!ENTITY % ents SYSTEM 'xep.ent'>
+%ents;
+]>
+<?xml-stylesheet type='text/xsl' href='xep.xsl'?>
+<xep><header>
+<title>Dataform based Buttons in chats</title>
+<abstract>Description of a subset of XEP-0004 for showing simple actionable
+buttons in chats.</abstract>
+&LEGALNOTICE;
+<number>xxxx</number>
+<status>ProtoXEP</status>
+<type>Informational</type>
+<sig>Standards</sig>
+<dependencies>
+<spec>XMPP Core</spec>
+</dependencies>
+<dependencies>
+<spec>XEP-0004</spec>
+</dependencies>
+<supersedes/>
+<supersededby/>
+<shortname>NOT_YET_ASSIGNED</shortname>
+<author>
+<firstname>Kim</firstname>
+<surname>Alvefur</surname>
+<email>zash@zash.se</email>
+<jid>zash@zash.se</jid>
+</author>
+<revision>
+<version>nil</version>
+<date>2019-04-04</date>
+<initials>ka</initials>
+<remark>
+<p>Add some security considerations</p>
+</remark>
+</revision>
+<revision>
+<version>0.0.1</version>
+<date>2018-06-01</date>
+<initials>ka</initials>
+<remark>
+<p>Initial version</p>
+</remark>
+</revision>
+</header>
+<section1 anchor="intro" topic="Introduction">
+
+<p>Having actionable buttons in chats is apparently a fashionable thing
+now. XMPP has had the building blocks for this since literally
+forever<note><p><a href='https://xmpp.org/extensions/xep-0045.html#voiceapprove' title=''>https://xmpp.org/extensions/xep-0045.html#voiceapprove</a></p></note>, so this simply reiterates what XEP-0004 says.</p>
+
+</section1><section1 anchor="reqs" topic="Requirements">
+
+<ul>
+<li>To provide enough to show a simple button or two in a chat.</li>
+</ul>
+
+</section1><section1 anchor="protocol" topic="Protocol">
+
+<section2 anchor="sending-a-button" topic="Sending a button">
+
+<p>Buttons are represented as a simple form with a single <tt>list-single</tt>
+field, each option representing one button that can be clicked.</p>
+
+<p>Here’s an example with a single button.</p>
+
+<example><![CDATA[<message>
+  <x xmlns="jabber:x:data" type="form">
+    <title>A button</title>
+    <instructions>Click the button</instructions>
+    <field var="thebutton" type="list-single">
+      <option label="Button">
+        <value>clicked</value>
+      </option>
+    </field>
+  </x>
+</message>]]></example>
+
+</section2><section2 anchor="clicking-a-button" topic="Clicking a button">
+
+<p>When an user clicks a button, the form is submitted and transported back
+as a reply message.</p>
+
+<example><![CDATA[<message>
+  <x xmlns="jabber:x:data" type="submit">
+    <field var="thebutton" type="list-single">
+      <value>clicked</value>
+    </field>
+  </x>
+</message>]]></example>
+
+</section2></section1><section1 anchor="impl" topic="Implementation Notes">
+
+<p>Each <tt>&lt;option&gt;</tt> in a <tt>list-single</tt> can be represented by separate
+buttons.</p>
+
+</section1><section1 anchor="security" topic="Security Considerations">
+
+<p>A dataform that is similar enough to any existing dataform-in-message
+might be used to eg trick a MUC moderator into granting voice if the
+message sender is not carefully verified.</p>
+
+</section1><section1 anchor="registrar" topic="XMPP Registrar Considerations">
+
+<p>N/A</p>
+</section1>
+</xep>
+
+
