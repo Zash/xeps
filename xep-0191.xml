@@ -180,6 +180,7 @@
 ]]></example>
     <p>If the &lt;block/&gt; element does not contain at least one &lt;item/&gt; child element, the server MUST return a &badrequest; error. The &lt;block/&gt; element MAY contain more than one &lt;item/&gt; child. Other standard XMPP stanza errors also apply; see &xmppcore; and &xep0086;.</p>
     <p>When the user blocks communications with a JID, the user's server MUST send unavailable presence information to the JID (but only if the JID is allowed to receive presence notifications from the user in accordance with the rules defined in <cite>RFC 3921</cite>).</p>
+    <p>If the user has received presence <!-- FIXME this may be hard without tracking inbound directed presence --> from the JID being blocked, the user's server SHOULD <!-- or maybe MUST? --> also generate unavailable presence for the blocked JID and send it to all the user's available resources.</p>
     <p>Once the user has blocked communications with a JID, the user's server MUST NOT deliver any XML stanzas from the JID to the user. The block remains in force until the user subsequently unblocks commmunications with the JID (i.e., the duration of the block is potentially unlimited and applies across sessions).</p>
     <p>If a blocked JID attempts to send a stanza to the user (i.e., an inbound stanza from the user's perspective), the user's server shall handle the stanza according to the following rules:</p>
     <ul>
@@ -229,6 +230,7 @@
 ]]></example>
     <p>When the user unblocks communications with a JID, the user's server MUST send the user's current presence information to the JID (but only if the JID is allowed to receive presence notifications from the user in accordance with the rules defined in <cite>RFC 3921</cite>).</p>
     <p>After the user has unblocked communications with a JID, the user's server MUST deliver any subsequent XML stanzas from the JID to the user.</p>
+    <p>If the user is subscribed to the previously blocked JID then <!-- something something server should refresh presence -->.</p>
   </section2>
 
   <section2 topic='User Unblocks All blocked JIDs' anchor='unblockall'>
