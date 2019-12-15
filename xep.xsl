@@ -422,7 +422,7 @@ content: "XEP-<xsl:value-of select='/xep/header/number'/>";
           </xsl:variable>
           <xsl:if test='/xep/header/status != "ProtoXEP"'>
             <dt>Source Control</dt>
-            <dd><a class='standardsButton' href='{$sourceHTML}'>HTML</a></dd>
+            <dd><a class='standardsButton' rel='edit' href='{$sourceHTML}'>HTML</a></dd>
           </xsl:if>
         </dl>
         <p>
@@ -437,8 +437,8 @@ content: "XEP-<xsl:value-of select='/xep/header/number'/>";
             <xsl:text>.pdf</xsl:text>
           </xsl:variable>
           This document in other formats:
-          <a class='standardsButton' href='{$formatXML}'>XML</a>&#160;
-          <a class='standardsButton' href='{$formatPDF}'>PDF</a>
+          <a class='standardsButton' rel='alternate' content-type='application/xml' href='{$formatXML}'>XML</a>&#160;
+          <a class='standardsButton' rel='alternate' content-type='application/pdf' href='{$formatPDF}'>PDF</a>
         </p>
         <!-- AUTHOR INFO -->
         <h3 id='appendix-authorinfo'>Appendix B: Author Information<xsl:call-template name='anchor-link'><xsl:with-param name='anchor' select='"appendix-authorinfo"'/></xsl:call-template></h3>
