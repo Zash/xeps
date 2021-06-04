@@ -1,0 +1,101 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<!DOCTYPE xep SYSTEM 'xep.dtd' [
+  <!ENTITY % ents SYSTEM 'xep.ent'>
+%ents;
+]>
+<?xml-stylesheet type='text/xsl' href='xep.xsl'?>
+<xep><header>
+<title>XEP Template</title>
+<abstract>This specification provides an example of the format for XMPP Extension Protocols (XEPs).</abstract>
+&LEGALNOTICE;
+<number>xxxx</number>
+<status>ProtoXEP</status>
+<type>Standards Track</type>
+<sig>Standards</sig>
+<approver>Council</approver>
+<dependencies>
+<spec>XMPP Core</spec>
+</dependencies>
+<supersedes/>
+<supersededby/>
+<shortname>NOT_YET_ASSIGNED</shortname>
+<author>
+<firstname>Kim</firstname>
+<surname>Alvefur</surname>
+<email>zash@zash.se</email>
+<jid>zash@zash.se</jid>
+</author>
+<revision>
+<version>0.0.1</version>
+<date>2021-02-26</date>
+<initials>ka</initials>
+<remark>
+<p>First draft.</p>
+</remark>
+</revision>
+</header>
+<section1 anchor="intro" topic="Introduction">
+
+<p>Want more detailed s2s errors, especially wrt TLS and certificate
+issues.</p>
+
+<section2 anchor="tldr" topic="TL;DR">
+
+<code class="xml"><![CDATA[<message type="error" id="mGO0" from="juliet@remotehost.example" to="romeo@localhost.localdomain">
+  <error type="wait" by="localhost.localdomain">
+    <remote-server-timeout xmlns="urn:ietf:params:xml:ns:xmpp-stanzas"/>
+    <text xmlns="urn:ietf:params:xml:ns:xmpp-stanzas" xml:lang="en">Remote server's certificate has expired</text>
+    <certificate-expired xmlns="urn:xmpp:TBD-EDITOR-FIXME:s2s-cert-issues"/>
+  </error>
+</message>]]></code>
+
+</section2></section1><section1 anchor="reqs" topic="Requirements">
+
+<p>STRONGLY RECOMMENDED.</p>
+
+</section1><section1 anchor="glossary" topic="Glossary">
+
+<p>OPTIONAL.</p>
+
+</section1><section1 anchor="usecases" topic="Use Cases">
+
+<p>STRONGLY RECOMMENDED.</p>
+
+</section1><section1 anchor="rules" topic="Business Rules">
+
+<p>OPTIONAL.</p>
+
+</section1><section1 anchor="impl" topic="Implementation Notes">
+
+<p>OPTIONAL.</p>
+
+</section1><section1 anchor="access" topic="Accessibility Considerations">
+
+<p>OPTIONAL.</p>
+
+</section1><section1 anchor="i18n" topic="Internationalization Considerations">
+
+<p>OPTIONAL.</p>
+
+</section1><section1 anchor="security" topic="Security Considerations">
+
+<p>REQUIRED.</p>
+
+</section1><section1 anchor="iana" topic="IANA Considerations">
+
+<p>REQUIRED.</p>
+
+</section1><section1 anchor="registrar" topic="XMPP Registrar Considerations">
+
+<p>REQUIRED.</p>
+
+</section1><section1 anchor="design" topic="Design Considerations">
+
+<p>RECOMMENDED.</p>
+
+</section1><section1 anchor="schema" topic="XML Schema">
+
+<p>REQUIRED for protocol specifications.</p>
+</section1>
+</xep>
+
