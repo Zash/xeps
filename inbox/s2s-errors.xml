@@ -5,8 +5,8 @@
 ]>
 <?xml-stylesheet type='text/xsl' href='xep.xsl'?>
 <xep><header>
-<title>XEP Template</title>
-<abstract>This specification provides an example of the format for XMPP Extension Protocols (XEPs).</abstract>
+<title>Extended server-to-server error conditions</title>
+<abstract>This specification describes extended error conditions for server-to-server failure reasons.</abstract>
 &LEGALNOTICE;
 <number>xxxx</number>
 <status>ProtoXEP</status>
@@ -26,6 +26,14 @@
 <jid>zash@zash.se</jid>
 </author>
 <revision>
+<version>0.0.2</version>
+<date>2021-06-04</date>
+<initials>ka</initials>
+<remark>
+<p>Add stuff</p>
+</remark>
+</revision>
+<revision>
 <version>0.0.1</version>
 <date>2021-02-26</date>
 <initials>ka</initials>
@@ -36,8 +44,13 @@
 </header>
 <section1 anchor="intro" topic="Introduction">
 
-<p>Want more detailed s2s errors, especially wrt TLS and certificate
-issues.</p>
+<p>XMPP Core defines only two stanza errors for when the error relates to a
+server-to-server connectivity failure, namely <tt class="xml">&lt;remote-server-not-found/&gt;</tt> and
+<tt class="xml">&lt;remote-server-timeout/&gt;</tt>. Especially since the introduction of
+mandatory encryption, the possible reasons why a s2s connection could
+not be established can be numerous.</p>
+
+<p>TODO: Limit scope to TLS/certificate errors or more general?</p>
 
 <section2 anchor="tldr" topic="TL;DR">
 
@@ -51,7 +64,10 @@ issues.</p>
 
 </section2></section1><section1 anchor="reqs" topic="Requirements">
 
-<p>STRONGLY RECOMMENDED.</p>
+<ul>
+<li>Provide entities with more detailed information about what went
+wrong with delivery of a stanza.</li>
+</ul>
 
 </section1><section1 anchor="glossary" topic="Glossary">
 
@@ -59,11 +75,36 @@ issues.</p>
 
 </section1><section1 anchor="usecases" topic="Use Cases">
 
-<p>STRONGLY RECOMMENDED.</p>
+<p>Is it useful to have machine-readable data telling you your message
+could not be delivered because the remote server’s certificate expired?
+I think so.</p>
+
+</section1><section1 anchor="defined-extended-conditions" topic="Defined Extended Conditions">
+
+<p>TODO: Does this need a registry?</p>
+
+<dl>
+<di><dt><tt class="xml">&lt;certificate-expired/&gt;</tt></dt>
+<dd>The remote server’s certificate has expired.</dd></di>
+<di><dt><tt class="xml">&lt;self-signed-certificate/&gt;</tt></dt>
+<dd>The remote server uses a self-signed certificate (and the local
+server does not allow this).</dd></di>
+<di><dt><tt class="xml">&lt;certificate-not-trusted/&gt;</tt></dt>
+<dd>Remote server’s certificate is not trusted by the local server, i.e.
+because it is not issued by a trusted certificate authority.</dd></di>
+<di><dt><tt class="xml">&lt;certificate-name-mismatch/&gt;</tt></dt>
+<dd>Remote server’s certificate is not valid for the server name as used
+in the <tt>@to</tt> stream attribute and the hostpart of the JID in the
+stanza that the delivery error relates to.</dd></di>
+<di><dt><tt>&lt;certificate-invalid/&gt;</tt>{.xml&gt;</dt>
+<dd>Remote server’s certificate could not be validated for some other
+reason. TODO: Leave this out?</dd></di>
+</dl>
 
 </section1><section1 anchor="rules" topic="Business Rules">
 
-<p>OPTIONAL.</p>
+<p>These would all accompany a <tt class="xml">&lt;remote-server-timeout/&gt;</tt> error, with
+an <tt>&lt;error&gt;</tt> <tt>@type</tt> attribute of <tt>wait</tt>.</p>
 
 </section1><section1 anchor="impl" topic="Implementation Notes">
 
