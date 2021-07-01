@@ -35,6 +35,36 @@ not be established can be numerous.
 
 TODO: Limit scope to TLS/certificate errors or more general?
 
+## Possible sources of errors
+
+JID correctness and internal server routing issues are out of scope, as
+there are defined stanza error conditions for that.
+
+A brief list of possible sources of problems when attempting to deliver a
+stanza to a remote server:
+
+* DNS
+    * Explicit denial of existence, i.e. `SRV 0 0 0 .`
+    * Missing A/AAAA records.
+    * No response.
+    * Temporary or permanent error (i.e. expired DNSSEC signatures)
+* IP
+    * Routing issues
+* TCP
+    * Port blocked
+    * Port not reachable
+* TLS
+    * Certificate
+        * Expired
+        * Wrong name
+        * Self-signed
+        * Issued by an unknown CA
+    * Protocol version mismatch
+    * No shared cipher suites
+    * Other TLS problems
+* SASL
+    * Failed
+
 ## TL;DR
 
 ``` xml
