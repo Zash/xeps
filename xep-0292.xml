@@ -158,7 +158,11 @@
 
   <section2 topic='IQ-Based Publication and Retrieval' anchor='self-iq'>
     <p>As in <cite>XEP-0054</cite>, the primary method for publishing and retrieving vCards is the XMPP &IQ; stanza. (Although it would have been possible to use &xep0222; for public storage and retrieval, community consensus is that storage via IQ is more backward-compatible with <cite>XEP-0054</cite>, and that publish-subscribe is more appropriate only for event notifications.)</p>
-      <!-- TODO &xep0222; / &xep0223; -->
+      <!--
+        The argument for using bare IQ does not hold anymore, if it ever did.
+        The IQ method only works with vcard-temp because of undocumented hacks in servers.
+        Meanwhile, PEP is now ubiquitous and supported by all modern clients.
+      -->
     <section3 topic='Retrieval' anchor='self-iq-retrieval'>
       <p>An XMPP entity retrieves the vCard of another entity (or itself) by sending an IQ-get to the target entity containing a &lt;vcard/&gt; child element (note the lowercase "c"!) qualified by the 'urn:ietf:params:xml:ns:vcard-4.0' namespace.</p>
       <example caption="vCard Retrieval Request"><![CDATA[
@@ -170,9 +174,8 @@
   </iq>
 ]]></example>
       <p>If a vCard exists for the target entity and the requesting XMPP entity has permission to retrieve it, the responsible entity (e.g., the XMPP server that hosts the account for a bare JID) MUST return the data in an IQ-result:</p>
-        <!-- FIXME what happens to the permissions of the vcard4 PEP node? -->
-        <!-- TODO say something about permissions, how do you even configure them? -->
-        <!-- TODO discourage publishing photos in vcard4, instead point to xep-0084 -->
+        <!-- Using PEP as in XEP-0222 / XEP-0223 gives the user control over the access model which is a good thing. -->
+        <!-- Since we have XEP-0084 dedicated to profile pictures, they should not be stored in the vcard.  -->
       <example caption="Server Returns vCard"><![CDATA[
   <iq from='stpeter@jabber.org'
       id='bx81v356'
